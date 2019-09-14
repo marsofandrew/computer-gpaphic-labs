@@ -1,4 +1,4 @@
-package com.marsofandrew.lab1;
+package com.marsofandrew.helpers;
 
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
@@ -8,11 +8,6 @@ import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.gl2.GLUT;
-import com.marsofandrew.helpers.Axis;
-import com.marsofandrew.helpers.Helpers;
-import com.marsofandrew.helpers.OGLDrawable;
-import com.marsofandrew.helpers.Shape;
-import com.marsofandrew.helpers.Shapes;
 
 
 import java.awt.*;
@@ -27,7 +22,6 @@ import static com.jogamp.opengl.GL.GL_DEPTH_BUFFER_BIT;
 
 public class Scene {
   private static final GLU glu = new GLU();
-  private static final GLUT glut = new GLUT();
   private final GLCanvas glcanvas;
   private final List<List<? extends OGLDrawable>> scenes;
   private int sceneIndex = 0;
@@ -39,36 +33,7 @@ public class Scene {
     glcanvas = new GLCanvas(glcapabilities);
   }
 
-  public static void main(String[] args) {
 
-    Scene scene = new Scene();
-
-    scene.addFrame(
-        new Shape(gl2 -> glut.glutWireTeapot(0.25))
-            .translate(0, -0.3, 0)
-            .setColor(1, 1, 1),
-        new Shape(gl2 -> glut.glutWireCube(1f))
-            .setColor(1, 1, 0)
-            .translate(0, 0, -0.5)
-    );
-    scene.addFrame(
-        new Shape(gl2 -> glut.glutWireTeapot(0.25))
-            .translate(0, -0.2, 0)
-            .setColor(1, 1, 1)
-            .rotate(30, Axis.X),
-        new Shape(gl2 -> glut.glutWireCube(1f))
-            .setColor(1, 1, 0)
-            .translate(0, 0, -0.5)
-    );
-    scene.addFrame(
-        new Shape(gl2 -> glut.glutWireCone(0.2, 0.8, 50, 50))
-            .translate(0.5, 0, 0)
-            //.rotate(0, Axis.Z)
-            .setColor(1, 1, 1)
-    );
-
-    Helpers.showFrame(scene.getFrame("Lab 1"), scene.getScene(), new Dimension(800, 600));
-  }
 
   public Frame getFrame(String name) {
     final Frame frame = new Frame(name);
