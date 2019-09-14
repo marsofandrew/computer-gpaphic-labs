@@ -27,16 +27,28 @@ public class Lab {
         new Shape(gl2 -> glut.glutWireTeapot(0.25))
             .translate(0, -0.2, 0)
             .setColor(1, 1, 1)
-            .rotate(30, Axis.X),
+            .rotate(30, Axis.X), //TODO: make normal rotation
         new Shape(gl2 -> glut.glutWireCube(1f))
             .setColor(1, 1, 0)
             .translate(0, 0, -0.5)
     );
     scene.addFrame(
-        new Shape(gl2 -> glut.glutWireCone(0.2, 0.8, 50, 50))
-            .translate(0.5, 0, 0)
-            //.rotate(0, Axis.Z)
-            .setColor(1, 1, 1)
+        new Shape(gl2 -> glut.glutWireCone(0.2, 0.6, 50, 50))
+            .translate(0, -0.6, 0)
+            .rotate(-90, Axis.X)
+            .setColor(0.5f, 1, 1),
+        new Shape(gl2 -> glut.glutWireSphere(0.25, 50, 50))
+            .setColor(1, 0, 0)
+    );
+
+    scene.addFrame(
+        new Shape(gl2 -> glut.glutWireCone(0.2, 0.6, 50, 50))
+            .translate(0, -1, 0)
+            .rotate(-90, Axis.X)
+            .setColor(0.5f, 1, 1),
+        new Shape(gl2 -> glut.glutWireSphere(0.25, 50, 50))
+            .setColor(1, 0, 0)
+            .scale(1.5, 1.5, 1.5)
     );
 
     Helpers.showFrame(scene.getFrame("Lab 1"), scene.getScene(), new Dimension(800, 600));
