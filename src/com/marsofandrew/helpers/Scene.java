@@ -7,8 +7,6 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLCanvas;
 import com.jogamp.opengl.glu.GLU;
-import com.jogamp.opengl.util.gl2.GLUT;
-
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -25,6 +23,8 @@ public class Scene {
   private final GLCanvas glcanvas;
   private final List<List<? extends OGLDrawable>> scenes;
   private int sceneIndex = 0;
+  private OGLAction beforeDisplay;
+  private OGLAction afterDisplay;
 
   public Scene() {
     scenes = new ArrayList<>();
@@ -32,8 +32,6 @@ public class Scene {
     GLCapabilities glcapabilities = new GLCapabilities(glprofile);
     glcanvas = new GLCanvas(glcapabilities);
   }
-
-
 
   public Frame getFrame(String name) {
     final Frame frame = new Frame(name);
@@ -74,6 +72,7 @@ public class Scene {
     scenes.add(list);
   }
 
+
   public <T extends OGLDrawable> void addFrame(T... list) {
     addFrame(Arrays.asList(list));
   }
@@ -94,13 +93,20 @@ public class Scene {
       @Override
       public void display(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
+        gl.glLoadIdentity();
+        if (beforeDisplay != null) {
+          beforeDisplay.doAction(gl);
+        }
 
-        //gl.glMatrixMode(GL2.GL_MODELVIEW);
-        glu.gluLookAt(4, 10, 0, 5, 0, 5, 0, 50, 100);
         if (sceneIndex < scenes.size()) {
           gl.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
           Shapes.draw(gl, scenes.get(sceneIndex));
         }
+
+        if (afterDisplay != null) {
+          afterDisplay.doAction(gl);
+        }
+        gl.glFlush();
       }
 
       @Override
@@ -111,5 +117,45 @@ public class Scene {
     });
 
     return glcanvas;
+  }
+
+  /**
+   * Setter for the perspectiveTransformation.
+   *
+   * @param beforeDisplay The perspectiveTransformation.
+   * @return This, so the API can be used fluently.
+   */
+  public Scene setBeforeDisplay(OGLAction beforeDisplay) {
+    this.beforeDisplay = beforeDisplay;
+    return this;
+  }
+
+  /**
+   * Getter for the perspectiveTransformation.
+   *
+   * @return The perspectiveTransformation.
+   */
+  public OGLAction getBeforeDisplay() {
+    return beforeDisplay;
+  }
+
+  /**
+   * Setter for the afterDisplay.
+   *
+   * @param afterDisplay The afterDisplay.
+   * @return This, so the API can be used fluently.
+   */
+  public Scene setAfterDisplay(OGLAction afterDisplay) {
+    this.afterDisplay = afterDisplay;
+    return this;
+  }
+
+  /**
+   * Getter for the afterDisplay.
+   *
+   * @return The afterDisplay.
+   */
+  public OGLAction getAfterDisplay() {
+    return afterDisplay;
   }
 }

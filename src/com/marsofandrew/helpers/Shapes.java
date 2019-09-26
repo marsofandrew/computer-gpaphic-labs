@@ -15,9 +15,9 @@ public final class Shapes {
   }
 
   public static void draw(GL2 gl2, OGLDrawable drawable) {
-    gl2.glLoadIdentity();
+    gl2.glPushMatrix();
     drawable.draw(gl2);
-    gl2.glFlush();
+    gl2.glPopMatrix();
   }
 
 

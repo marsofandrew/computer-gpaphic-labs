@@ -5,6 +5,10 @@ import com.jogamp.opengl.GL2;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.toRadians;
+
 public class Shape implements OGLDrawable {
 
   private List<OGLAction> actions;
@@ -40,7 +44,6 @@ public class Shape implements OGLDrawable {
     return this;
   }
 
-
   public Shape setColor(float red, float green, float blue) {
     actions.add(gl -> gl.glColor3f(red, green, blue));
     return this;
@@ -56,9 +59,34 @@ public class Shape implements OGLDrawable {
     return this;
   }
 
-  public Shape addaction(OGLAction action) {
+  public Shape addAction(OGLAction action) {
     actions.add(action);
     return this;
   }
 
+  public Shape rotateAroundAxis(Axis axis, double angle, double currentX, double currentY, double currentZ) {
+    double radians = toRadians(angle);
+    double newX = currentX;
+    double newY = currentY;
+    double newZ = currentZ;
+
+    switch (axis) {
+      case X:
+        newY = currentY * cos(radians) + currentZ * sin(radians);
+        newZ = - currentY * sin(radians) + currentZ * cos(radians);
+        break;
+      case Y:
+        newX = currentX * cos(radians) + currentZ * sin(radians);
+        newZ = - currentX * sin(radians) + currentZ * cos(radians);
+        break;
+      case Z:
+        newX = currentX * cos(radians) - currentY * sin(radians);
+        newY = - currentX * sin(radians) + currentY * cos(radians);
+        break;
+    }
+
+    return translate(-currentX, -currentY, -currentZ)
+        .rotate(angle, axis)
+        .translate(newX, newY, newZ);
+  }
 }
