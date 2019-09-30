@@ -44,8 +44,8 @@ public class Shape implements OGLDrawable {
     return this;
   }
 
-  public Shape setColor(float red, float green, float blue) {
-    actions.add(gl -> gl.glColor3f(red, green, blue));
+  public Shape setColorRGB(double red, double green, double blue) {
+    actions.add(gl -> gl.glColor3d(red, green, blue));
     return this;
   }
 
@@ -56,6 +56,11 @@ public class Shape implements OGLDrawable {
 
   public Shape scale(double scaleX, double scaleY, double scaleZ) {
     actions.add(gl2 -> gl2.glScaled(scaleX, scaleY, scaleZ));
+    return this;
+  }
+
+  public Shape setColorARGB(double alpha, double red, double green, double blue) {
+    actions.add(gl2 -> gl2.glColor4d(red, green, blue, alpha));
     return this;
   }
 
@@ -73,15 +78,15 @@ public class Shape implements OGLDrawable {
     switch (axis) {
       case X:
         newY = currentY * cos(radians) + currentZ * sin(radians);
-        newZ = - currentY * sin(radians) + currentZ * cos(radians);
+        newZ = -currentY * sin(radians) + currentZ * cos(radians);
         break;
       case Y:
         newX = currentX * cos(radians) + currentZ * sin(radians);
-        newZ = - currentX * sin(radians) + currentZ * cos(radians);
+        newZ = -currentX * sin(radians) + currentZ * cos(radians);
         break;
       case Z:
         newX = currentX * cos(radians) - currentY * sin(radians);
-        newY = - currentX * sin(radians) + currentY * cos(radians);
+        newY = -currentX * sin(radians) + currentY * cos(radians);
         break;
     }
 

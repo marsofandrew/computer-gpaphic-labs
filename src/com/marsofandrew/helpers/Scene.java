@@ -25,56 +25,29 @@ public class Scene {
   private int sceneIndex = 0;
   private OGLAction beforeDisplay;
   private OGLAction afterDisplay;
+  private KeyListener keyListener;
 
   public Scene() {
     scenes = new ArrayList<>();
     GLProfile glprofile = GLProfile.getDefault();
     GLCapabilities glcapabilities = new GLCapabilities(glprofile);
     glcanvas = new GLCanvas(glcapabilities);
+    this.keyListener = new BaseKeyListener();
   }
 
   public Frame getFrame(String name) {
     final Frame frame = new Frame(name);
-    frame.addKeyListener(new KeyListener() {
-      @Override
-      public void keyTyped(KeyEvent e) {
-      }
-
-      @Override
-      public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-          case KeyEvent.VK_ESCAPE:
-            System.out.println("Program has finished");
-            System.exit(0);
-            break;
-          case KeyEvent.VK_RIGHT:
-            sceneIndex = sceneIndex + 1 < scenes.size() ? sceneIndex + 1 : sceneIndex;
-            System.out.printf("scene %d is choosed\n", sceneIndex);
-            glcanvas.display();
-            break;
-          case KeyEvent.VK_LEFT:
-            sceneIndex = sceneIndex - 1 > 0 ? sceneIndex - 1 : 0;
-            System.out.printf("scene %d is choosed\n", sceneIndex);
-            glcanvas.display();
-            break;
-        }
-      }
-
-      @Override
-      public void keyReleased(KeyEvent e) {
-
-      }
-    });
+    frame.addKeyListener(keyListener);
     return frame;
   }
 
-  public void addFrame(List<? extends OGLDrawable> list) {
+  public Scene addFrame(List<? extends OGLDrawable> list) {
     scenes.add(list);
+    return this;
   }
 
-
-  public <T extends OGLDrawable> void addFrame(T... list) {
-    addFrame(Arrays.asList(list));
+  public <T extends OGLDrawable> Scene addFrame(T... list) {
+    return addFrame(Arrays.asList(list));
   }
 
   public GLCanvas getScene() {
@@ -157,5 +130,56 @@ public class Scene {
    */
   public OGLAction getAfterDisplay() {
     return afterDisplay;
+  }
+
+  /**
+   * Getter for the keyListener.
+   *
+   * @return The keyListener.
+   */
+  public KeyListener getKeyListener() {
+    return keyListener;
+  }
+
+  /**
+   * Setter for the keyListener.
+   *
+   * @param keyListener The keyListener.
+   * @return This, so the API can be used fluently.
+   */
+  public Scene setKeyListener(KeyListener keyListener) {
+    this.keyListener = keyListener;
+    return this;
+  }
+
+  class BaseKeyListener implements KeyListener {
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+      switch (e.getKeyCode()) {
+        case KeyEvent.VK_ESCAPE:
+          System.out.println("Program has finished");
+          System.exit(0);
+          break;
+        case KeyEvent.VK_RIGHT:
+          sceneIndex = sceneIndex + 1 < scenes.size() ? sceneIndex + 1 : sceneIndex;
+          System.out.printf("scene %d is choosed\n", sceneIndex);
+          glcanvas.display();
+          break;
+        case KeyEvent.VK_LEFT:
+          sceneIndex = sceneIndex - 1 > 0 ? sceneIndex - 1 : 0;
+          System.out.printf("scene %d is choosed\n", sceneIndex);
+          glcanvas.display();
+          break;
+      }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+
+    }
   }
 }
