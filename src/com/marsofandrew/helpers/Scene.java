@@ -35,6 +35,26 @@ public class Scene {
     this.keyListener = new BaseKeyListener();
   }
 
+  /**
+   * Getter for the sceneIndex.
+   *
+   * @return The sceneIndex.
+   */
+  public int getSceneIndex() {
+    return sceneIndex;
+  }
+
+  /**
+   * Setter for the sceneIndex.
+   *
+   * @param sceneIndex The sceneIndex.
+   * @return This, so the API can be used fluently.
+   */
+  public Scene setSceneIndex(int sceneIndex) {
+    this.sceneIndex = sceneIndex;
+    return this;
+  }
+
   public Frame getFrame(String name) {
     final Frame frame = new Frame(name);
     frame.addKeyListener(keyListener);
@@ -152,6 +172,25 @@ public class Scene {
     return this;
   }
 
+  public void autoChangeFrame(KeyEvent e) {
+    switch (e.getKeyCode()) {
+      case KeyEvent.VK_ESCAPE:
+        System.out.println("Program has finished");
+        System.exit(0);
+        break;
+      case KeyEvent.VK_RIGHT:
+        sceneIndex = sceneIndex + 1 < scenes.size() ? sceneIndex + 1 : sceneIndex;
+        System.out.printf("scene %d is choosed\n", sceneIndex);
+        glcanvas.display();
+        break;
+      case KeyEvent.VK_LEFT:
+        sceneIndex = sceneIndex - 1 > 0 ? sceneIndex - 1 : 0;
+        System.out.printf("scene %d is choosed\n", sceneIndex);
+        glcanvas.display();
+        break;
+    }
+  }
+
   class BaseKeyListener implements KeyListener {
     @Override
     public void keyTyped(KeyEvent e) {
@@ -159,22 +198,7 @@ public class Scene {
 
     @Override
     public void keyPressed(KeyEvent e) {
-      switch (e.getKeyCode()) {
-        case KeyEvent.VK_ESCAPE:
-          System.out.println("Program has finished");
-          System.exit(0);
-          break;
-        case KeyEvent.VK_RIGHT:
-          sceneIndex = sceneIndex + 1 < scenes.size() ? sceneIndex + 1 : sceneIndex;
-          System.out.printf("scene %d is choosed\n", sceneIndex);
-          glcanvas.display();
-          break;
-        case KeyEvent.VK_LEFT:
-          sceneIndex = sceneIndex - 1 > 0 ? sceneIndex - 1 : 0;
-          System.out.printf("scene %d is choosed\n", sceneIndex);
-          glcanvas.display();
-          break;
-      }
+      autoChangeFrame(e);
     }
 
     @Override
