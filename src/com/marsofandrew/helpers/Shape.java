@@ -1,21 +1,31 @@
 package com.marsofandrew.helpers;
 
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.util.texture.Texture;
+import com.jogamp.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.TextureIO;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 import static java.lang.Math.toRadians;
 
 public class Shape implements OGLDrawable {
 
-  private List<OGLAction> actions;
+  private final List<OGLAction> actions;
+  private final List<OGLAction> afterActions;
   private OGLDrawable drawable;
 
   public Shape(OGLDrawable drawable) {
     actions = new ArrayList<>();
+    afterActions = new ArrayList<>();
     this.drawable = drawable;
   }
 
@@ -25,6 +35,9 @@ public class Shape implements OGLDrawable {
       action.doAction(gl2);
     }
     drawable.draw(gl2);
+    for (OGLAction action : afterActions) {
+      action.doAction(gl2);
+    }
   }
 
   public Shape rotate(double angle, Axis axis) {
@@ -66,6 +79,31 @@ public class Shape implements OGLDrawable {
 
   public Shape addAction(OGLAction action) {
     actions.add(action);
+    return this;
+  }
+
+  public Shape addAfterAction(OGLAction action) {
+    afterActions.add(action);
+    return this;
+  }
+
+  public Shape addTexture(String path) {
+    actions.add(gl2 -> {
+      Texture texture = null;
+      try {
+        texture = TextureIO.newTexture(new File(path), false);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      TextureCoords texcoords = texture.getImageTexCoords();
+      texture.enable(gl2);
+      texture.bind(gl2);
+      gl2.glTexCoord2f(texcoords.left(), texcoords.top());
+      gl2.glTexCoord2f(texcoords.right(), texcoords.top());
+      gl2.glTexCoord2f(texcoords.right(), texcoords.bottom());
+      texture.disable(gl2);
+
+    });
     return this;
   }
 
