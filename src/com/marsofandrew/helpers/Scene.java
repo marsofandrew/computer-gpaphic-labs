@@ -24,6 +24,7 @@ public class Scene {
   private final List<List<? extends OGLDrawable>> scenes;
   private int sceneIndex = 0;
   private OGLAction beforeDisplay;
+  private OGLAction init;
   private OGLAction afterDisplay;
   private KeyListener keyListener;
 
@@ -66,6 +67,26 @@ public class Scene {
     return this;
   }
 
+  /**
+   * Setter for the init.
+   *
+   * @param init The init.
+   * @return This, so the API can be used fluently.
+   */
+  public Scene setInit(OGLAction init) {
+    this.init = init;
+    return this;
+  }
+
+  /**
+   * Getter for the init.
+   *
+   * @return The init.
+   */
+  public OGLAction getInit() {
+    return init;
+  }
+
   public <T extends OGLDrawable> Scene addFrame(T... list) {
     return addFrame(Arrays.asList(list));
   }
@@ -75,7 +96,7 @@ public class Scene {
     glcanvas.addGLEventListener(new GLEventListener() {
       @Override
       public void init(GLAutoDrawable glAutoDrawable) {
-
+        init.doAction(glAutoDrawable.getGL().getGL2());
       }
 
       @Override
