@@ -63,7 +63,7 @@ public class Lab {
       gl2.glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
       gl2.glEnable(GL_TEXTURE_2D);
       gl2.glEnable(GL2.GL_BLEND);
-      gl2.glDisable(GL_CULL_FACE);
+      //gl2.glDisable(GL_CULL_FACE);
       gl2.glFrontFace(GL_CCW);
     });
     scene.setBeforeDisplay(createBeforeAction(lightPosition, lightDiffuse, ambient));
@@ -71,12 +71,10 @@ public class Lab {
     scene.addFrame(
         new Shape(gl2 -> glut.glutSolidTeapot(0.3))
             .setColorRGB(1, 0, 1)
-            .translate(0.3, 0, -1)
-        ,
+            .translate(0.3, 0, -1),
         new Shape(gl2 -> glut.glutSolidCube(0.5f))
-            .setColorRGB(1, 0, 1)
-            .translate(-0.65, 0, -0.5)
-        ,
+            .setColorARGB(0.5 ,1, 0, 1)
+            .translate(-0.65, 0, -0.5),
         new Shape(gl2 -> glut.glutSolidSphere(0.25, 50, 50))
             .setColorRGB(1, 0, 1)
             .translate(0.05, 0, 0.2)
@@ -84,11 +82,11 @@ public class Lab {
             .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_SPECULAR, FloatBuffer.wrap(new float[]{1f, 1f, 1f, 1})))
             .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_DIFFUSE, FloatBuffer.wrap(new float[]{0f, 0f, 0f, 0f}))),
         new Shape(gl2 -> glut.glutSolidCone(0.25, 1, 50, 50))
-            .setColorARGB(0.4, 1, 1, 1)
+            .setColorARGB(1, 1, 1, 1)
             .rotate(-90, Axis.X)
             .translate(0.6, 0, 0.5)
             .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_AMBIENT, FloatBuffer.wrap(new float[]{0.2f, 0.2f, 0.2f, 1f})))
-            .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_SPECULAR, FloatBuffer.wrap(new float[]{0f, 0f, 0f, 0})))
+            //.addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_SPECULAR, FloatBuffer.wrap(new float[]{0f, 0f, 0f, 0})))
             .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_DIFFUSE, FloatBuffer.wrap(new float[]{0.3f, 0.4f, 0.3f, 1f})))
 
     );
@@ -100,18 +98,17 @@ public class Lab {
           } catch (IOException e) {
             e.printStackTrace();
           }
-          TextureCoords texcoords = texture.getImageTexCoords();
           texture.enable(gl2);
           texture.bind(gl2);
-
           glut.glutSolidTeapot(0.3);
           texture.disable(gl2);
+          texture.destroy(gl2);
         })
             .setColorRGB(1, 0, 1)
             .translate(0.3, 0, -1)
         ,
         new Shape(gl2 -> glut.glutSolidCube(0.5f))
-            .setColorRGB(1, 0, 1)
+            .setColorARGB(0.5 ,1, 0, 1)
             .translate(-0.65, 0, -0.5)
         ,
         new Shape(gl2 -> glut.glutSolidSphere(0.25, 50, 50))
@@ -121,7 +118,7 @@ public class Lab {
             .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_SPECULAR, FloatBuffer.wrap(new float[]{1f, 1f, 1f, 1})))
             .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_DIFFUSE, FloatBuffer.wrap(new float[]{0f, 0f, 0f, 0f}))),
         new Shape(gl2 -> glut.glutSolidCone(0.25, 1, 50, 50))
-            .setColorARGB(0.4, 1, 1, 1)
+            .setColorARGB(1, 1, 1, 1)
             .rotate(-90, Axis.X)
             .translate(0.6, 0, 0.5)
             .addAction(gl2 -> gl2.glMaterialfv(GL_FRONT, GL_AMBIENT, FloatBuffer.wrap(new float[]{0.2f, 0.2f, 0.2f, 1f})))
@@ -189,6 +186,7 @@ public class Lab {
           case KeyEvent.VK_2:
             lightDiffuse = FloatBuffer.wrap(new float[]{0, 0, 1, 1});
             scene.setBeforeDisplay(createBeforeAction(lightPosition, lightDiffuse, ambient));
+            scene.getScene().display();
             break;
           case KeyEvent.VK_3:
             lightDiffuse = FloatBuffer.wrap(new float[]{0, 1, 0, 1});
