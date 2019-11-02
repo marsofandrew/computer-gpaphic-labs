@@ -11,6 +11,7 @@ import com.marsofandrew.helpers.Helpers;
 import com.marsofandrew.helpers.OGLAction;
 import com.marsofandrew.helpers.Scene;
 import com.marsofandrew.helpers.Shape;
+import com.marsofandrew.helpers.Shapes;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -98,11 +99,7 @@ public class Lab {
           } catch (IOException e) {
             e.printStackTrace();
           }
-          texture.enable(gl2);
-          texture.bind(gl2);
-          glut.glutSolidTeapot(0.3);
-          texture.disable(gl2);
-          texture.destroy(gl2);
+          Shapes.addTexture(gl2, texture, gl->glut.glutSolidTeapot(0.3));
         })
             .setColorRGB(1, 0, 1)
             .translate(0.3, 0, -1)
@@ -216,9 +213,9 @@ public class Lab {
   private static OGLAction createBeforeAction(FloatBuffer lightPosition, FloatBuffer lightDiffuse, FloatBuffer ambient) {
     return gl2 -> {
       gl2.glMatrixMode(GL_PROJECTION);
-      //glu.gluPerspective(90, 0.75, 1, 300);
+      glu.gluPerspective(90, 0.75, 1, 300);
       gl2.glMatrixMode(GL_MATRIX_MODE);
-      //glu.gluLookAt(-1.1, 0.8, 1.2, 0, 0, 0, 0, 1, 0);
+      glu.gluLookAt(-1.1, 0.8, 1.2, 0, 0, 0, 0, 1, 0);
 
       gl2.glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
       gl2.glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
