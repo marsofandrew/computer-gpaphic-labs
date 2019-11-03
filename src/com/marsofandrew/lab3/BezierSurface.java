@@ -20,20 +20,22 @@ public class BezierSurface implements OGLDrawable {
   private final int v; //y
   private final boolean shouldDrawBasePoints;
   private final int drawType;
+  private final int gridSize;
 
-  public BezierSurface(List<DoubleBuffer> points, int u, int v) {
-    this(points, u, v, GL_FILL);
+  public BezierSurface(List<DoubleBuffer> points, int u, int v, int gridSize) {
+    this(points, u, v, gridSize, GL_FILL);
   }
 
-  public BezierSurface(List<DoubleBuffer> points, int u, int v, int drawType) {
-    this(points, u, v, drawType, false);
+  public BezierSurface(List<DoubleBuffer> points, int u, int v, int gridSize, int drawType) {
+    this(points, u, v, gridSize, drawType, false);
   }
 
-  public BezierSurface(List<DoubleBuffer> points, int u, int v, int drawType, boolean shouldDrawBasePoints) {
+  public BezierSurface(List<DoubleBuffer> points, int u, int v, int gridSize, int drawType, boolean shouldDrawBasePoints) {
     this.points = points;
     this.u = u;
     this.v = v;
     this.drawType = drawType;
+    this.gridSize = gridSize;
     this.shouldDrawBasePoints = shouldDrawBasePoints;
   }
 
@@ -45,8 +47,8 @@ public class BezierSurface implements OGLDrawable {
     }
 
     gl2.glMap2d(GL_MAP2_VERTEX_3, 0.0f, 1.0f, 3, u, 0.0f, 1.0f, 3 * u, v, joinBuffer(points).array(), 0);
-    gl2.glMapGrid2d(30, 0.0f, 1.0f, 30, 0.0f, 1.0f);
-    gl2.glEvalMesh2(drawType, 0, 30, 0, 30);
+    gl2.glMapGrid2d(gridSize, 0.0f, 1.0f, gridSize, 0.0f, 1.0f);
+    gl2.glEvalMesh2(drawType, 0, gridSize, 0, gridSize);
 
   }
 

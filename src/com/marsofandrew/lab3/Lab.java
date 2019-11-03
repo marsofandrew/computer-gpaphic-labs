@@ -3,6 +3,7 @@ package com.marsofandrew.lab3;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.gl2.GLUT;
+import com.marsofandrew.helpers.Axis;
 import com.marsofandrew.helpers.Helpers;
 import com.marsofandrew.helpers.OGLAction;
 import com.marsofandrew.helpers.Scene;
@@ -56,9 +57,9 @@ public class Lab {
     });
     scene.setBeforeDisplay(createBeforeAction(lightPosition, lightDiffuse, ambient));
 
-    scene.addFrame(new Shape(new BezierSurface())
+    scene.addFrame(new Shape(new SpecialObject())
         .setColorRGB(1,1,1)
-        .scale(2, 2, 2)
+        .translate(0, -0.25, 0)
     );
 
 //    scene.setKeyListener(new KeyListener() {
