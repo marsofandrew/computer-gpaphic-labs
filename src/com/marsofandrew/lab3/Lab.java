@@ -18,7 +18,9 @@ import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
 import static com.jogamp.opengl.GL.GL_TRUE;
 import static com.jogamp.opengl.GL2.GL_BLEND;
 import static com.jogamp.opengl.GL2.GL_SRC_ALPHA;
+import static com.jogamp.opengl.GL2ES1.GL_LIGHT_MODEL_AMBIENT;
 import static com.jogamp.opengl.GL2ES1.GL_LIGHT_MODEL_TWO_SIDE;
+import static com.jogamp.opengl.GL2GL3.GL_LINE;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_AMBIENT;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_COLOR_MATERIAL;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_DIFFUSE;
@@ -38,7 +40,7 @@ public class Lab {
   private static FloatBuffer lightDiffuse = FloatBuffer.wrap(new float[]{1f, 1f, 1f, 1f});
 
   public static void main(String[] args) {
-    double radius = 0.5;
+    double radius = 0.25;
     Scene scene = new Scene();
     scene.setInit(gl2 -> {
       gl2.glEnable(GL_BLEND);
@@ -51,7 +53,6 @@ public class Lab {
       gl2.glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
       gl2.glEnable(GL_TEXTURE_2D);
       gl2.glEnable(GL2.GL_BLEND);
-
       //gl2.glFrontFace(GL_CCW);
     });
     scene.setBeforeDisplay(createBeforeAction(lightPosition, lightDiffuse, ambient));
