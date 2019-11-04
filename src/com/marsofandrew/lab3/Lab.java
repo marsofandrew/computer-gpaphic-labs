@@ -33,13 +33,12 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 public class Lab {
   private static final GLUT glut = new GLUT();
   private static final GLU glu = new GLU();
-  private static FloatBuffer lightPosition = FloatBuffer.wrap(new float[]{-10, 3, 2});
+  private static FloatBuffer lightPosition = FloatBuffer.wrap(new float[]{25, 10, 20});
   private static FloatBuffer ambient = FloatBuffer.wrap(new float[]{0, 0, 0, 1f});
   private static FloatBuffer lightDiffuse = FloatBuffer.wrap(new float[]{1f, 1f, 1f, 1f});
-  private static final float DIFFERENCE = 1f;
-  private static final float COLOR_DIFF = 0.05f;
 
   public static void main(String[] args) {
+    double radius = 0.5;
     Scene scene = new Scene();
     scene.setInit(gl2 -> {
       gl2.glEnable(GL_BLEND);
@@ -53,14 +52,20 @@ public class Lab {
       gl2.glEnable(GL_TEXTURE_2D);
       gl2.glEnable(GL2.GL_BLEND);
 
-      gl2.glFrontFace(GL_CCW);
+      //gl2.glFrontFace(GL_CCW);
     });
     scene.setBeforeDisplay(createBeforeAction(lightPosition, lightDiffuse, ambient));
 
-    scene.addFrame(new Shape(new SpecialObject())
-        .setColorRGB(1,1,1)
-        .translate(0, -0.25, 0)
-    );
+    scene.addFrame(new SpecialObject(radius, 0));
+    scene.addFrame(new SpecialObject(radius, 1));
+    scene.addFrame(new SpecialObject(radius, 2));
+    scene.addFrame(new SpecialObject(radius, 3));
+    scene.addFrame(new SpecialObject(radius, 4));
+    scene.addFrame(new SpecialObject(radius, 5));
+    scene.addFrame(new SpecialObject(radius, 6));
+    scene.addFrame(new SpecialObject(radius, 7));
+    scene.addFrame(new SpecialObject(radius, 8));
+    scene.addFrame(new SpecialObject(radius, 9));
 
 //    scene.setKeyListener(new KeyListener() {
 //      @Override
@@ -113,7 +118,7 @@ public class Lab {
       gl2.glMatrixMode(GL_PROJECTION);
       glu.gluPerspective(90, 0.75, 1, 300);
       gl2.glMatrixMode(GL_MATRIX_MODE);
-      glu.gluLookAt(-1.5, 0.8, 1.2, 0, 0, 0, 0, 1, 0);
+      glu.gluLookAt(-1.8, 1.5, 2, 0, 0, 0, 0, 1, 0);
 
       gl2.glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
       gl2.glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
