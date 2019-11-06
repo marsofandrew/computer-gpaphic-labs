@@ -14,9 +14,13 @@ import java.nio.FloatBuffer;
 
 import static com.jogamp.opengl.GL.GL_CCW;
 import static com.jogamp.opengl.GL.GL_DEPTH_TEST;
+import static com.jogamp.opengl.GL.GL_FRONT;
 import static com.jogamp.opengl.GL.GL_TEXTURE_2D;
 import static com.jogamp.opengl.GL.GL_TRUE;
+import static com.jogamp.opengl.GL2.GL_AUTO_NORMAL;
 import static com.jogamp.opengl.GL2.GL_BLEND;
+import static com.jogamp.opengl.GL2.GL_LIGHT_MODEL_COLOR_CONTROL;
+import static com.jogamp.opengl.GL2.GL_LIGHT_MODEL_LOCAL_VIEWER;
 import static com.jogamp.opengl.GL2.GL_SRC_ALPHA;
 import static com.jogamp.opengl.GL2ES1.GL_LIGHT_MODEL_AMBIENT;
 import static com.jogamp.opengl.GL2ES1.GL_LIGHT_MODEL_TWO_SIDE;
@@ -28,6 +32,7 @@ import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHT0;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_LIGHTING;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_NORMALIZE;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_POSITION;
+import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SHININESS;
 import static com.jogamp.opengl.fixedfunc.GLLightingFunc.GL_SPECULAR;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_MATRIX_MODE;
 import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
@@ -35,12 +40,12 @@ import static com.jogamp.opengl.fixedfunc.GLMatrixFunc.GL_PROJECTION;
 public class Lab {
   private static final GLUT glut = new GLUT();
   private static final GLU glu = new GLU();
-  private static FloatBuffer lightPosition = FloatBuffer.wrap(new float[]{25, 10, 20});
+  private static FloatBuffer lightPosition = FloatBuffer.wrap(new float[]{20, 4, 5});
   private static FloatBuffer ambient = FloatBuffer.wrap(new float[]{0, 0, 0, 1f});
   private static FloatBuffer lightDiffuse = FloatBuffer.wrap(new float[]{1f, 1f, 1f, 1f});
 
   public static void main(String[] args) {
-    double radius = 0.25;
+    double radius = 0.2;
     Scene scene = new Scene();
     scene.setInit(gl2 -> {
       gl2.glEnable(GL_BLEND);
@@ -50,10 +55,11 @@ public class Lab {
       gl2.glEnable(GL_LIGHT0);
       gl2.glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
       gl2.glEnable(GL_NORMALIZE);
+      gl2.glEnable(GL_AUTO_NORMAL);
       gl2.glBlendFunc(GL_SRC_ALPHA, GL_SRC_ALPHA);
       gl2.glEnable(GL_TEXTURE_2D);
       gl2.glEnable(GL2.GL_BLEND);
-      //gl2.glFrontFace(GL_CCW);
+      gl2.glFrontFace(GL_CCW);
     });
     scene.setBeforeDisplay(createBeforeAction(lightPosition, lightDiffuse, ambient));
 
@@ -125,6 +131,10 @@ public class Lab {
       gl2.glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
       gl2.glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
       gl2.glLightfv(GL_LIGHT0, GL_SPECULAR, FloatBuffer.wrap(new float[]{1, 1, 1, 0}));
+      gl2.glMaterialf(GL_FRONT, GL_SHININESS, 128);
+      gl2.glMaterialfv(GL_FRONT, GL_SPECULAR, FloatBuffer.wrap(new float[]{1f, 1f, 1f, 1}));
+      gl2.glMaterialfv(GL_FRONT, GL_DIFFUSE, FloatBuffer.wrap(new float[]{0f, 0f, 0f, 0f}));
+      gl2.glColor4d(1,1,1,1);
     };
   }
 

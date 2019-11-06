@@ -113,9 +113,8 @@ public class SpecialObject implements OGLDrawable {
 
   private static List<DoubleBuffer> modifyOctagon(Map<Double, Double> radiuses) {
     List<DoubleBuffer> list = new ArrayList<>();
-    List<Double> rad = new ArrayList<Double>(radiuses.keySet());
+    List<Double> rad = new ArrayList<>(radiuses.keySet());
     rad.sort(null);
-    System.out.println(rad);
     for (double y : rad) {
       List<DoubleBuffer> points = countOctagonPoints(radiuses.get(y), y);
       list.addAll(points);
