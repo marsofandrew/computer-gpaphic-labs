@@ -27,6 +27,7 @@ public class Scene {
   private OGLAction init;
   private OGLAction afterDisplay;
   private KeyListener keyListener;
+  private boolean isAnimated;
 
   public Scene() {
     scenes = new ArrayList<>();
@@ -34,6 +35,7 @@ public class Scene {
     GLCapabilities glcapabilities = new GLCapabilities(glprofile);
     glcanvas = new GLCanvas(glcapabilities);
     this.keyListener = new BaseKeyListener();
+    this.isAnimated = false;
   }
 
   /**
@@ -108,6 +110,9 @@ public class Scene {
       public void display(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glLoadIdentity();
+        if (isAnimated) {
+          nextFrame(Direction.NEXT);
+        }
         if (beforeDisplay != null) {
           beforeDisplay.doAction(gl);
         }
@@ -193,6 +198,16 @@ public class Scene {
     return this;
   }
 
+  public void nextFrame(Direction direction) {
+    int shift = direction.getStep();
+    sceneIndex += shift;
+    if (sceneIndex >= scenes.size()) {
+      sceneIndex -= 1;
+    } else if (sceneIndex < 0) {
+      sceneIndex = 0;
+    }
+  }
+
   public void autoChangeFrame(KeyEvent e) {
     switch (e.getKeyCode()) {
       case KeyEvent.VK_ESCAPE:
@@ -200,16 +215,24 @@ public class Scene {
         System.exit(0);
         break;
       case KeyEvent.VK_RIGHT:
-        sceneIndex = sceneIndex + 1 < scenes.size() ? sceneIndex + 1 : sceneIndex;
+        nextFrame(Direction.NEXT);
         System.out.printf("scene %d is choosed\n", sceneIndex);
         glcanvas.display();
         break;
       case KeyEvent.VK_LEFT:
-        sceneIndex = sceneIndex - 1 > 0 ? sceneIndex - 1 : 0;
+        nextFrame(Direction.PREV);
         System.out.printf("scene %d is choosed\n", sceneIndex);
         glcanvas.display();
         break;
     }
+  }
+
+  public void enableAnimation() {
+    isAnimated = true;
+  }
+
+  public void disableAnimation() {
+    isAnimated = false;
   }
 
   class BaseKeyListener implements KeyListener {
@@ -225,6 +248,25 @@ public class Scene {
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+  }
+
+  enum Direction {
+    PREV(-1),
+    NEXT(1);
+    private int step;
+
+    Direction(int step) {
+      this.step = step;
+    }
+
+    /**
+     * Getter for the step.
+     *
+     * @return The step.
+     */
+    int getStep() {
+      return step;
     }
   }
 }

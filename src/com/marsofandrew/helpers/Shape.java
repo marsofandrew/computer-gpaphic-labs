@@ -123,7 +123,7 @@ public class Shape implements OGLDrawable {
         newY = -currentX * sin(radians) + currentY * cos(radians);
         break;
     }
-
+    // TODO: Fix coordinate system is changed or could be changed
     return translate(-currentX, -currentY, -currentZ)
         .rotate(angle, axis)
         .translate(newX, newY, newZ);

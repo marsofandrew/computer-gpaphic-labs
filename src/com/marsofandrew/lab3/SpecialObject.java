@@ -173,9 +173,9 @@ public class SpecialObject implements OGLDrawable {
           put(0.0, baseRadius);
           put(0.15, baseRadius);
           put(0.35, baseRadius * 0.7);
-          put(0.4, baseRadius * 0.45);
-          put(0.5, baseRadius * 0.05);
-          put(0.6, baseRadius * 0.45);
+          put(0.4, baseRadius * 0.3);
+          put(0.5, baseRadius * 0.02);
+          put(0.6, baseRadius * 0.3);
           put(0.65, baseRadius * 0.7);
           put(0.85, baseRadius);
           put(1.0, baseRadius);
