@@ -95,7 +95,7 @@ public class Lab {
         new Shape(gl2 -> {
           Texture texture = null;
           try {
-            texture = TextureIO.newTexture(new File("res/text.jpg"), true);
+            texture = TextureIO.newTexture(new File("res/t1.jpg"), false);
           } catch (IOException e) {
             e.printStackTrace();
           }

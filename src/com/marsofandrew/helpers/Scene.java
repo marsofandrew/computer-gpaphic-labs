@@ -110,9 +110,6 @@ public class Scene {
       public void display(GLAutoDrawable glAutoDrawable) {
         GL2 gl = glAutoDrawable.getGL().getGL2();
         gl.glLoadIdentity();
-        if (isAnimated) {
-          nextFrame(Direction.NEXT);
-        }
         if (beforeDisplay != null) {
           beforeDisplay.doAction(gl);
         }
@@ -126,6 +123,9 @@ public class Scene {
           afterDisplay.doAction(gl);
         }
         gl.glFlush();
+        if (isAnimated) {
+          nextFrame(Direction.NEXT);
+        }
       }
 
       @Override

@@ -25,7 +25,6 @@ public final class Helpers {
   }
 
   public static void showAnimatesFrame(Scene scene, String title, Dimension frameSize, int fps) {
-    scene.enableAnimation();
     GLCanvas canvas = scene.getScene();
     Frame frame = scene.getFrame(title);
     final FPSAnimator animator = new FPSAnimator(canvas, fps);
@@ -41,6 +40,7 @@ public final class Helpers {
 
     frame.setSize(frameSize);
     frame.setVisible(true);
+    scene.enableAnimation();
     animator.start();
   }
 }

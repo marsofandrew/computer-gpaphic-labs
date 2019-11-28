@@ -57,7 +57,7 @@ public class Lab {
       gl2.glEnable(GL_DEPTH_TEST);
       gl2.glEnable(GL_LIGHTING);
       gl2.glEnable(GL_LIGHT0);
-      gl2.glLightModelf(GL_LIGHT_MODEL_AMBIENT, GL_TRUE);
+      gl2.glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
       gl2.glEnable(GL_NORMALIZE);
       gl2.glEnable(GL_AUTO_NORMAL);
       gl2.glEnable(GL_TEXTURE_2D);
@@ -128,7 +128,7 @@ public class Lab {
       gl2.glMatrixMode(GL_PROJECTION);
       glu.gluPerspective(90, 0.75, 1, 300);
       gl2.glMatrixMode(GL_MATRIX_MODE);
-      glu.gluLookAt(-1.8, 1.5, 2, 0, 0, 0, 0, 1, 0);
+      glu.gluLookAt(-1.8, 3, 2, 0, 0, 0, 0, 1, 0);
 
       gl2.glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
       gl2.glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);

@@ -48,7 +48,7 @@ public class TermWork {
   private static final int FRAMES = 100;
   private static final int FPS = 1;
   private static FloatBuffer lightPosition = FloatBuffer.wrap(new float[]{5, 6, 10});
-  private static FloatBuffer ambient = FloatBuffer.wrap(new float[]{0, 0, 0, 1f});
+  private static FloatBuffer ambient = FloatBuffer.wrap(new float[]{0.1f, 0.1f, 0.1f, 1f});
   private static FloatBuffer lightDiffuse = FloatBuffer.wrap(new float[]{1f, 1f, 1f, 1f});
 
   public static void main(String[] args) {
@@ -59,7 +59,7 @@ public class TermWork {
       gl2.glEnable(GL_DEPTH_TEST);
       gl2.glEnable(GL_LIGHTING);
       gl2.glEnable(GL_LIGHT0);
-      gl2.glLightModelf(GL_LIGHT_MODEL_AMBIENT, GL_TRUE);
+      gl2.glLightModelf(GL_LIGHT_MODEL_COLOR_CONTROL, GL_TRUE);
       gl2.glEnable(GL_NORMALIZE);
       gl2.glEnable(GL_AUTO_NORMAL);
       gl2.glEnable(GL_TEXTURE_2D);
@@ -69,7 +69,8 @@ public class TermWork {
     scene.setBeforeDisplay(createBeforeAction(lightPosition, lightDiffuse, ambient));
 
     for (int i = 0; i <= FRAMES; i++) {
-      scene.addFrame(new SpecialOctahedron().changeState(i));
+      scene.addFrame(new SpecialOctahedron().changeState(i),
+      new Shape(gl -> glut.glutSolidCube(3)).translate(0,-2.55,0));
     }
 
     scene.setKeyListener(new KeyListener() {
@@ -123,7 +124,7 @@ public class TermWork {
       gl2.glMatrixMode(GL_PROJECTION);
       glu.gluPerspective(90, 0.75, 1, 300);
       gl2.glMatrixMode(GL_MATRIX_MODE);
-      glu.gluLookAt(0, 2, 3, 0, 0, 0, 0, 1, 0);
+      glu.gluLookAt(0, 0, 3, 0, 0, 0, 0, 1, 0);
 
       gl2.glLightfv(GL_LIGHT0, GL_DIFFUSE, lightDiffuse);
       gl2.glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);

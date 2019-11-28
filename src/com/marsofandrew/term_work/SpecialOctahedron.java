@@ -24,11 +24,11 @@ public class SpecialOctahedron implements OGLDrawable {
   public void draw(GL2 gl2) {
     Texture texture = null;
     try {
-      texture = TextureIO.newTexture(new File("res/text.jpg"), true);
+      texture = TextureIO.newTexture(new File("res/t1.jpg"), true);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    Shapes.addTexture(gl2,texture , shape);
+    Shapes.addTexture(gl2, texture, shape);
   }
 
   public SpecialOctahedron changeState(int state) {

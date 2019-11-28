@@ -6,12 +6,11 @@ import com.marsofandrew.helpers.OGLDrawable;
 import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
+import javafx.util.Pair;
 
 import static com.jogamp.opengl.GL2GL3.GL_FILL;
-import static com.jogamp.opengl.GL2GL3.GL_LINE;
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.sqrt;
 
@@ -19,7 +18,7 @@ public class SpecialObject implements OGLDrawable {
 
   private final double radius;
   private final List<List<DoubleBuffer>> initialPoints;
-  private final List<Map<Double, Double>> statementRadiuses;
+  private final List<List<Pair<Double, Double>>> statementRadiuses;
   private final int fillType;
   private int statement;
 
@@ -47,7 +46,7 @@ public class SpecialObject implements OGLDrawable {
           initialPoints.get(statement).size(),
           verticalSize, 40, fillType);
     } else if (statement >= 5 && statement < 5 + statementRadiuses.size()) {
-      Map<Double, Double> radiuses = statementRadiuses.get(statement - 5);
+      List<Pair<Double, Double>> radiuses = statementRadiuses.get(statement - 5);
       verticalSize = radiuses.size();
       surface = new BezierSurface(modifyOctagon(radiuses), 9, verticalSize, 40, fillType);
     } else {
@@ -111,12 +110,17 @@ public class SpecialObject implements OGLDrawable {
     );
   }
 
-  private static List<DoubleBuffer> modifyOctagon(Map<Double, Double> radiuses) {
+  /**
+   * Cre
+   *
+   * @param radiuses
+   * @return
+   */
+  private static List<DoubleBuffer> modifyOctagon(List<Pair<Double, Double>> radiuses) {
     List<DoubleBuffer> list = new ArrayList<>();
-    List<Double> rad = new ArrayList<>(radiuses.keySet());
-    rad.sort(null);
-    for (double y : rad) {
-      List<DoubleBuffer> points = countOctagonPoints(radiuses.get(y), y);
+
+    for (Pair<Double, Double> pair : radiuses) {
+      List<DoubleBuffer> points = countOctagonPoints(pair.getValue(), pair.getKey());
       list.addAll(points);
     }
     return list;
@@ -133,54 +137,21 @@ public class SpecialObject implements OGLDrawable {
     return list;
   }
 
-  private static List<Map<Double, Double>> setStatementRadiuses(double baseRadius) {
-    return Arrays.asList(
-        new HashMap<Double, Double>() {{
-          put(0.0, baseRadius);
-          put(0.5, baseRadius * 0.8);
-          put(1.0, baseRadius);
-        }},
-        new HashMap<>() {{
-          put(0.0, baseRadius);
-          put(0.2, baseRadius);
-          put(0.35, baseRadius * 0.8);
-          put(0.5, baseRadius * 0.6);
-          put(0.65, baseRadius * 0.8);
-          put(0.8, baseRadius);
-          put(1.0, baseRadius);
-        }},
-        new HashMap<>() {{
-          put(0.0, baseRadius);
-          put(0.2, baseRadius);
-          put(0.35, baseRadius * 0.7);
-          put(0.5, baseRadius * 0.4);
-          put(0.65, baseRadius * 0.7);
-          put(0.8, baseRadius);
-          put(1.0, baseRadius);
-        }},
-        new HashMap<>() {{
-          put(0.0, baseRadius);
-          put(0.2, baseRadius);
-          put(0.35, baseRadius * 0.7);
-          put(0.4, baseRadius * 0.5);
-          put(0.5, baseRadius * 0.1);
-          put(0.6, baseRadius * 0.5);
-          put(0.65, baseRadius * 0.7);
-          put(0.8, baseRadius);
-          put(1.0, baseRadius);
-        }},
-        new HashMap<>() {{
-          put(0.0, baseRadius);
-          put(0.15, baseRadius);
-          put(0.35, baseRadius * 0.7);
-          put(0.4, baseRadius * 0.3);
-          put(0.5, baseRadius * 0.02);
-          put(0.6, baseRadius * 0.3);
-          put(0.65, baseRadius * 0.7);
-          put(0.85, baseRadius);
-          put(1.0, baseRadius);
-        }}
-    );
+  private static List<List<Pair<Double, Double>>> setStatementRadiuses(double baseRadius) {
+    final double r = 0.3;
+    ArrayList<List<Pair<Double, Double>>> list = new ArrayList<>();
+
+    for (int diff : Arrays.asList(90, 60, 45, 30, 15, 10, 5, 3)) {
+      ArrayList<Pair<Double, Double>> localList = new ArrayList<>();
+      for (int i = 0; i <= 360; i += diff) {
+        double radians = Math.toRadians(i);
+        localList.add(new Pair(0.5 + Math.sin(radians) / 2, baseRadius + r * (1 - Math.cos(radians))));
+      }
+      //System.out.println(localList);
+      list.add(localList);
+    }
+    return list;
+
   }
 
 }
